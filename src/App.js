@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import MonthsList from "./components/MonthsList";
+import { apiUrl } from "./config/api";
 
 function App() {
+  const [users, setUsers] = useState([]);
+
+  //1 вариант
+  // useEffect(() => {
+  //   fetch(apiUrl)
+  //     .then((response) => response.json())
+  //     .then((json) => setUsers(json));
+  // });
+
+  const loadUsers = async () => {
+    const data = await fetch(apiUrl);
+    const json = await data.json();
+    setUsers(json);
+  };
+  //componentDidMount
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  // console.log(users);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MonthsList users={users}/>
     </div>
   );
 }
